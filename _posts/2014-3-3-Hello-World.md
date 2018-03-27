@@ -1,10 +1,7 @@
 ---
 layout: post
-title: You're up and running!
+title: Hola mundo!
 ---
 
-Next you can update your site name, avatar and other options using the _config.yml file in the root of your repository (shown below).
-
-![_config.yml]({{ site.baseurl }}/images/config.png)
-
-The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
+Bienvenidos a the y factor lab, ac? dejo generalmente notas con c?digo de las cosas que voy haciendo para que no se pierdan en el camino y no tenga que buscarlas de nuevo por toda la red cuando me de cuenta que me serv?an de algo, espero que alg?n d?a pueda serle ?til a alguien m?s.
+Gracias por llegar hasta este punto!
