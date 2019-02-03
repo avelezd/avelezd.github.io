@@ -4,12 +4,9 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+I am a research enthusiast trying to learn something about R, Python and Data Science, this is my personal lab, feel free to complain.
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+I will try to record everything I test.
 
-### Contact me
-
-[email@domain.com](mailto:email@domain.com)
