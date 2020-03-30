@@ -1,12 +1,6 @@
 ---
-layout: page
-title: About
+layout: about
+title: About me
 permalink: /about/
 ---
-
-I am a research passionate about data science trying to learn something about R and Python, this is my personal lab, feel free to complain.
-
-### More Information
-
-I will try to record everything I test.
-
+I am Alvaro, currently a Msc student in [**Data Mining and Knowledge Discovery**](http://datamining.dc.uba.ar/datamining/) at [**Universidad de Buenos Aires**](https://exactas.uba.ar/). My research work focuses on location-based systems and human movement and mobility.
