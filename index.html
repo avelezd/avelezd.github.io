@@ -6,13 +6,28 @@ layout: default
   {% for post in site.posts %}
     <article class="post">
 
-      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
+	<div class="date-head">
+	  {{ post.date | date: "%B %e, %Y" }}
+        </div>
+        
+	<div class="container">
+	  <img src="{{post.image}}" alt="post title" style="width:100%;">
+          
+	  <div class="top-left"> 
+	    <a href="{{ site.baseurl }}{{ post.url }}" class="post-title">{{ post.title }}</a>
+	  </div>
+       </div> 
 
-      <div class="entry">
-        {{ post.excerpt }}
+      <div class="resume"> 
+	{{ post.resume }}
+	<a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Leer más</a>
       </div>
+     
+      <!-- <div class="entry">
+        {{ post.excerpt }}
+      </div>-->
 
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
+      <hr> 
     </article>
   {% endfor %}
 </div>

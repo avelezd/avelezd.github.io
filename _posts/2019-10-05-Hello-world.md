@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Hello githubpages world!
+image: /images/articles/hello-world/header.png
+resume: Este es el primer post de mi blog, una explicación corta de porque lo construí pero más importante aún que herramientas usé, bienvenido y sientase libre de quejarse!
 ---
 
 ![post head](/images/articles/head1.png)
