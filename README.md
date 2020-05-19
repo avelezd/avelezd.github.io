@@ -5,5 +5,6 @@ This is my personal laboratory to practice storytelling and data presentation, t
 - [x] ~~New look! Name + icons + about info.~~
 - [X] ~~Modify the structure of the About section to add images.~~
 - [X] ~~First post about blog construction.~~
-- [ ] Post about maps, data and python
-- [ ] Modfications to structre of the post to include info about flags and author.
+- [x] ~~Post about maps, data and python
+- [x] ~~Modfications to structre of the post~~  
+- [ ] Add tags functions to posts.

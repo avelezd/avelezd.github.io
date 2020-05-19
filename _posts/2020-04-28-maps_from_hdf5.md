@@ -160,6 +160,7 @@ def cropimagesfromdir(inpath,outpath):
 
 El resultado final me deja bastante satisfecho, para mi es una herramienta muy útil ya que me permíte ver el comportamiento de los datos dentro dentro de un archivo y entender los momentos de mayor flujo de vehículos y enfocar mis esfuerzos en analizar esa parte del día.
 
-Si te interesa conocer más sobre como funciona y la implementación completa de la solución podés ver el repositorio de github que publique. [hdf5\_lab](https://github.com/avelezd/hdf5_lab/tree/master/experimental).
+Si te interesa conocer más sobre como funciona y la implementación completa de la solución podés ver mi repositorio de github [ploth5maps - Plotting pixel maps from HDF5 files](https://github.com/avelezd/hdf5_lab/tree/master/ploth5maps).
+
 Espero que les resulte tán útil como a mi.
 
