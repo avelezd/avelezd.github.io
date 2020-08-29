@@ -20,7 +20,7 @@ La verdad es que NO es muy cómodo validar la información de ésta manéra, as�
 como dije antes estos archivos contienen arreglos multidimensionales, los cuales tienen la forma \{288, 495, 436, 3\}, esto básicamente significa:
 
 * **288 bloques:** Cada bloque representa 5 minútos de información generada, 288 bloques de 5 minutos son 24 horas de flujo de tráfico.
-* **495 píxeles de altura:** Las ciudades fueron segmentadas en píxeles, cada píxel representa un espacio de apróximadamente 100x100 mts, cada píxel resúme la actividad del tráfico en ese lugar del mapa en un bloque de tiempo. Cada ciudad contiene 495 píxeles de alto.
+* **495 píxeles de alto:** Las ciudades fueron segmentadas en píxeles, cada píxel representa un espacio de apróximadamente 100x100 mts, cada píxel resúme la actividad del tráfico en ese lugar del mapa en un bloque de tiempo. Cada ciudad contiene 495 píxeles de alto.
 * **436 píxeles de ancho:** Cada ciudad contiene 436 píxeles de ancho.
 
 <center><img src="/images/articles/city-pixel/berlin_tessellation.png" alt="Estambul" width="600" align="center"/></center>
@@ -148,7 +148,7 @@ def cropimagesfromdir(inpath,outpath):
      imageio.mimsave('%s/animation.gif'%outpath, images)
 ```
 
-*cropimagesfromdir* va a recortar las imágenes que en mi caso tenian algunos bordes que adicionales que no necesitaba. 
+*cropimagesfromdir* va a recortar las imágenes que en mi caso tenian algunos bordes adicionales que no necesitaba. 
 *creategif* va a generar el gif animado usando la librería *imageio*.
 
 
@@ -160,7 +160,7 @@ def cropimagesfromdir(inpath,outpath):
 
 El resultado final me deja bastante satisfecho, para mi es una herramienta muy útil ya que me permíte ver el comportamiento de los datos dentro dentro de un archivo y entender los momentos de mayor flujo de vehículos y enfocar mis esfuerzos en analizar esa parte del día.
 
-Si te interesa conocer más sobre como funciona y la implementación completa de la solución podés ver mi repositorio de github [ploth5maps - Plotting pixel maps from HDF5 files](https://github.com/avelezd/hdf5_lab/tree/master/ploth5maps).
+Si te interesa conocer más sobre como funciona y la implementación completa de la solución podés ver mi repositorio de github [ploth5maps - Plotting pixel maps from HDF5 files](https://github.com/avelezd/plot_h5maps).
 
 Espero que les resulte tán útil como a mi.
 
