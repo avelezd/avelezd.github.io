@@ -1,4 +1,13 @@
-# avelezd + github
+![forthebadge](https://forthebadge.com/images/badges/built-by-hipsters.svg)
+![forthebadge](https://forthebadge.com/images/badges/made-with-out-pants.svg)
+![forthebadge](https://forthebadge.com/images/badges/approved-by-george-costanza.svg)
+![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)
+![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)
+![forthebadge](https://forthebadge.com/images/badges/powered-by-coffee.svg)
+![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)
+
+
+# avelezd.github.io: My personal blog
 This is my personal laboratory to practice storytelling and data presentation, the content is the result of different experiments most of them using Python, r and PostgreSQL.
 please visit: [avelezd.github.io](https://avelezd.github.io/)
 
@@ -50,14 +59,4 @@ You are free to:
 for any purpose, even commercially. Following the terms of *Attibution* and *ShareAlike*, for more information check [Creative commons licence description](https://creativecommons.org/licenses/by-sa/4.0/) 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
-
-
-## proudly earned badges
-![forthebadge](https://forthebadge.com/images/badges/built-by-hipsters.svg)
-![forthebadge](https://forthebadge.com/images/badges/made-with-out-pants.svg)
-![forthebadge](https://forthebadge.com/images/badges/approved-by-george-costanza.svg)
-![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)
-![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)
-![forthebadge](https://forthebadge.com/images/badges/powered-by-coffee.svg)
-![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)
 
