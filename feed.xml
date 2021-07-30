@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-07-30T17:20:44-05:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">avelezd + github</title><subtitle>Machine learning | Data science | Research lab</subtitle><entry><title type="html">Vim como editor de código</title><link href="http://0.0.0.0:4000/2021/vim-as-a-codeeditor/" rel="alternate" type="text/html" title="Vim como editor de código" /><published>2021-07-21T00:00:00-05:00</published><updated>2021-07-21T00:00:00-05:00</updated><id>http://0.0.0.0:4000/2021/vim-as-a-codeeditor</id><content type="html" xml:base="http://0.0.0.0:4000/2021/vim-as-a-codeeditor/">&lt;h1 id=&quot;work-in-progress&quot;&gt;(Work in progress)&lt;/h1&gt;
+
+&lt;!--Agregar mas historia de VIM--&gt;
+&lt;p&gt;Vim es un editor de texto muy liviano, normalmente corre en una consola, originalmente desarrollado para linux. Yo personalmente lo uso para editar todo lo que sea posible, este post busca compartir algunas de las configuraciones que he ido agregando a Vim para convertirlo en mi editor de texto preferido.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Este publicación esta enfocada en la version linux de Vim, no se consideraron versiones adapatadas a otros sistemas operativos.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Cuando empecé a utilizar vim como editor de código mientras abandonaba el mundo de los IDE’s, era lógico extrañar algunas características que hacían todo más sencillo, en este caso al momento de desembarcar en &lt;em&gt;Vim&lt;/em&gt;(o su predecesor &lt;a href=&quot;https://en.wikipedia.org/wiki/Vi&quot;&gt;Vi&lt;/a&gt;) todo parece hacerse más complicado, en este caso asumo que el lector a conoce los aspectos básicos del funcionamiento de &lt;em&gt;Vim&lt;/em&gt;, de no ser así quizá debería iniciar leyendo estos articulos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tutorial 1: Enlace acá&lt;/li&gt;
+  &lt;li&gt;Tutorial 2: Enlace acá&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Vim&lt;/em&gt; ofrece una gran variedad de &lt;a href=&quot;https://www.arsys.es/blog/soluciones/comandos-vim/&quot;&gt;atajos&lt;/a&gt; que pueden hacer que tu experiencia con la herramienta sea mucho más agradable. sin embargo este post busca cubrir el uso de plugins que faciliten la edición de código, en este caso particular me voy a enfocar en python como lenguaje de programación ya que actualmente es el que más utilizo.&lt;/p&gt;
+
+&lt;h2 id=&quot;los-básicos&quot;&gt;Los básicos&lt;/h2&gt;
+&lt;p&gt;Primero cubriremos los requerimientos fundamentales para la edición de código.&lt;/p&gt;
+
+&lt;h3 id=&quot;número-de-línea&quot;&gt;Número de línea&lt;/h3&gt;
+&lt;p&gt;Más que básico, fundamental!, por defecto &lt;em&gt;Vim&lt;/em&gt; no ofrece el número de línea visible, esto hace sea más dificil de leer o incluso de buscar un error. para este caso lo más sencillo es salir del modo editor y escribir:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set number
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Esto permitirá ver lo número de línea del archivo que se está editando actualmente y perdera su efecto en cuanto se cierre el archivo, es decir que es totalmente temporal. Si desea que este cambio sea permanente debe agregar el comando anterior al archivo:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/.vimrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si no encuentra este archivo en su directorio ‘home’ puede crearlo y agregar esta línea. Una vez editado este archivo, para ver los cambios aplicados inicie un nuevo editor de &lt;em&gt;Vim&lt;/em&gt;, es posible que este cambio no se vea reflejado en los editores que estaban abiertos desde antes de la edición del archivo, en este caso reinicie su editor para ver los cambios.&lt;/p&gt;
+
+&lt;h3 id=&quot;espacios-del-tab--4&quot;&gt;Espacios del Tab = 4&lt;/h3&gt;
+&lt;p&gt;Por defecto &lt;em&gt;Vim&lt;/em&gt; asigna 8 espacios cada vez apretamos la tecla ‘Tab’, esta médida se puede modificar según sea necesario, en mi caso voy a usar Tab=4 porque es la cantidad de espacios que requiere python para la identación, para esto vamos a agregar 3 comandos adicionales al archivo &lt;em&gt;vimrc&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;set tabstop=4
+
+set shiftwidth=4
+
+set expandtab
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;detector-de-llaves-&quot;&gt;Detector de llaves ‘{}’&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;set showmatch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;resaltar-sintaxis&quot;&gt;Resaltar sintaxis&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;syntax on
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;instalación-del-plugin-manager&quot;&gt;Instalación del plugin manager&lt;/h2&gt;
+
+&lt;p&gt;Vim utiliza por defecto un plugin manager pero vamos a instalar &lt;strong&gt;vundle&lt;/strong&gt; para simplificar la instalación y actualización de paquetes. en la terminal escriba:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Esto va a clonar el repositorio &lt;em&gt;bundle&lt;/em&gt; en su equipo.
+El siguiente paso es modificar el archivo de confiración de Vim (vimrc):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;busque el archivo &lt;em&gt;vimrc&lt;/em&gt; por lo general se encuentra en su home folder.
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  vim ~/.vimrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;y agregue el siguiente código:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  filetype off                  &quot; required
+
+  &quot; set the runtime path to include Vundle and initialize
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
+
+  &quot; let Vundle manage Vundle, required
+  Plugin 'gmarik/Vundle.vim'
+
+  &quot; All of your Plugins must be added before the following line
+  call vundle#end()
+  filetype plugin indent on
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Finalmente guarde los cambios y cierre el archivo.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Para instalar el plugin de Vundle dentro de vim, inicie vim desde su terminal. Luego escriba &lt;code class=&quot;highlighter-rouge&quot;&gt;:PluginInstall&lt;/code&gt; y presione Enter.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;plugins&quot;&gt;Plugins&lt;/h2&gt;
+
+&lt;p&gt;https://www.ionos.mx/digitalguide/servidores/herramientas/editores-linux-como-editar-codigo-con-vim/&lt;/p&gt;</content><author><name></name></author><summary type="html">(Work in progress)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://0.0.0.0:4000/images/articles/defaultbk.png" /><media:content medium="image" url="http://0.0.0.0:4000/images/articles/defaultbk.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Ciudades en píxeles de tráfico</title><link href="http://0.0.0.0:4000/2020/maps_from_hdf5/" rel="alternate" type="text/html" title="Ciudades en píxeles de tráfico" /><published>2020-04-28T00:00:00-05:00</published><updated>2020-04-28T00:00:00-05:00</updated><id>http://0.0.0.0:4000/2020/maps_from_hdf5</id><content type="html" xml:base="http://0.0.0.0:4000/2020/maps_from_hdf5/">&lt;p&gt;El nombre de este post me sigue sonando extráño pero resúme bastante bien su contenido, desde hace un tiempo estoy trabajando con un conjunto de datos que describe el flujo de tráfico de 3 grandes ciudades europeas:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://es.wikipedia.org/wiki/Berl%C3%ADn&quot;&gt;Berlín - Alemánia&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://es.wikipedia.org/wiki/Estambul&quot;&gt;Estambul - Turquía&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://es.wikipedia.org/wiki/Mosc%C3%BA&quot;&gt;Moscú - Rusia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Los archivos fuente están en formato &lt;a href=&quot;https://support.hdfgroup.org/HDF5/whatishdf5.html&quot;&gt;HDF5&lt;/a&gt; el cual permite almacenar grandes volúmnes de datos en arreglos multidimencionales. Cada archivo contiene 24 horas de información sobre el flujo de tráfico en una ciudad, representada en un arreglo de 4 dimensiones con valores entre 0 y 255.
+La verdad es que NO es muy cómodo validar la información de ésta manéra, así que dedíque algunas horas del fín de semana para generar mapas a partir de esos datos y el resultado es un poco de código python, este post y este lindo gif!&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;/images/articles/city-pixel/animacion_estambul_ch1.gif&quot; alt=&quot;Estambul&quot; width=&quot;300&quot; align=&quot;center&quot; /&gt;&lt;/center&gt;
+
+&lt;h2 id=&quot;que-contienen-los-archivos-hdf5-exactamente&quot;&gt;¿Que contienen los archivos HDF5 exactamente?&lt;/h2&gt;
+&lt;p&gt;como dije antes estos archivos contienen arreglos multidimensionales, los cuales tienen la forma {288, 495, 436, 3}, esto básicamente significa:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;288 bloques:&lt;/strong&gt; Cada bloque representa 5 minútos de información generada, 288 bloques de 5 minutos son 24 horas de flujo de tráfico.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;495 píxeles de alto:&lt;/strong&gt; Las ciudades fueron segmentadas en píxeles, cada píxel representa un espacio de apróximadamente 100x100 mts, cada píxel resúme la actividad del tráfico en ese lugar del mapa en un bloque de tiempo. Cada ciudad contiene 495 píxeles de alto.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;436 píxeles de ancho:&lt;/strong&gt; Cada ciudad contiene 436 píxeles de ancho.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;center&gt;&lt;img src=&quot;/images/articles/city-pixel/berlin_tessellation.png&quot; alt=&quot;Estambul&quot; width=&quot;600&quot; align=&quot;center&quot; /&gt;&lt;/center&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;3 Canales:&lt;/strong&gt; La información del tráfico está dividida en trés canáles diferentes: &lt;em&gt;volúmen, velocidad y dirección&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Entonces cuando nos referimos a un frame, estamos hablando de un bloque de 5 minutos que contiene 3 mapas (uno por cada canal), donde cada celda de la matriz de 495x436 contiene un valor escalado entre 0 y 255 que representa el estado del tráfico en un instante de tiempo en esa ubicación.&lt;/p&gt;
+
+&lt;p&gt;Puedes encontrar información mucho más técnica y detallada acerca del conjunto de datos en &lt;a href=&quot;https://www.iarai.ac.at/traffic4cast/&quot;&gt;&lt;em&gt;The Traffic4casting challenge 2019&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;y-cómo-se-hace-una-imagen-con-todo-eso&quot;&gt;y ¿cómo se hace una imagen con todo eso?&lt;/h2&gt;
+
+&lt;p&gt;Pues es justo ahí donde aparece Python y algunas librerías muy útilies.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;h5py&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;h5py&lt;/em&gt; nos va a permitir manipuar los archivos HDF5 de extensión .h5, con &lt;em&gt;numpy&lt;/em&gt; vamos a transformat los arreglos mltidemncionales en matrices sencillas de nxn y  &lt;em&gt;matplotlib&lt;/em&gt; nos va a permitor generar los gráficos. Ahora tenemos todo para iniciar, lo primero va a ser cargar el archivo.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;inpath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'/path/of/file/filename.h5'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h5py&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'r'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Estructura propia de los archivos HDF5
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;a_group_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a_group_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;axis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Esta parte del código va a permitir acceder directamente a los datos que es lo que nos interesa. la función &lt;em&gt;numpy.stack&lt;/em&gt; va a apilar las matrices de datos que va a extrayendo creando arreglos de numpy. Este tipo de archivos permiten almacenar grandes volúmenes de datos por lo que en ocaciones pueden tener varias ‘keys’, en este caso solo tenemos una por lo que acceder a los datos es bastante sencillo (solo copié y pegué este código de la documentación oficial).&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;framearray&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;495&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;436&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;n&quot;&gt;nuchannel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; 
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockidx&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;288&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rowidx&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;494&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colidx&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;435&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;framearray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rowidx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colidx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockidx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rowidx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colidx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nuchannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Con esto vamos a armar un arreglo de 3 dimensiones ya que elegimos un solo canal, la idea inicial es graficar cada canal independientente, además va a estar en formato numpy lo que lo hace más fácil de manejar. Dado que tenemos 3 canales y cada canal usa valores valores enre 0 y 255, me pareció buena idea usar un sistema de colores R,G,B. para esme armé un función para crear una paleta de colores personalizada.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.colors&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListedColormap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LinearSegmentedColormap&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createcolormap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nuchannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+ 
+     &lt;span class=&quot;n&quot;&gt;ltcolors&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;colhex&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;253&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+ 
+         &lt;span class=&quot;n&quot;&gt;hexstr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;colhex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'0x'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ 
+         &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexstr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;hexstr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'0%s'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexstr&lt;/span&gt;
+ 
+         &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nuchannel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;rgbstr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'#%s0000'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexstr&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# red
+&lt;/span&gt;         &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nuchannel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+               &lt;span class=&quot;n&quot;&gt;rgbstr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'#00%s00'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexstr&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# green
+&lt;/span&gt;         &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;rgbstr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'#0000%s'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexstr&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# blue
+&lt;/span&gt; 
+         &lt;span class=&quot;n&quot;&gt;ltcolors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rgbstr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ 
+     &lt;span class=&quot;n&quot;&gt;cmap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListedColormap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ltcolors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cmap&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Esta función va a usar el número del canal para generar los valores RGB que van a componer el mapa de colores de cada imagen.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;save_plotframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frame2plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;custcmap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nublock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nuchannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;495&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;436&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imshow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frame2plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cmap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;custcmap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;axis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'off'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'block %s'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nublock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savefig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'frames/ch%s/%s.png'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nuchannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nublock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;La función save_plotframe va generar las 288 imágenes que componen un día usando maplotlib y las va a guardar en la direccion que más nos guste. finalmente vamos a usar dos funciones que nos van a permitir generar el gif animado.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;img src=&quot;/images/articles/city-pixel/ch0.png&quot; alt=&quot;Canal 0&quot; width=&quot;200&quot; /&gt;
+&lt;img src=&quot;/images/articles/city-pixel/ch1.png&quot; alt=&quot;Canal 1&quot; width=&quot;200&quot; /&gt;
+&lt;img src=&quot;/images/articles/city-pixel/ch2.png&quot; alt=&quot;Canal 2&quot; width=&quot;200&quot; /&gt;
+&lt;/center&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PIL&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;imageio&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cropimagesfromdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+ 
+     &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+ 
+     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dirnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filenames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;walk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dirnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filenames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;file_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;%s/%s&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ 
+             &lt;span class=&quot;n&quot;&gt;im&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     
+             &lt;span class=&quot;c1&quot;&gt;# im.crop((left, top, right, bottom))
+&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;region&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;im&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;crop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;620&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1290&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;880&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%s/%s&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+ 
+ 
+ &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;creategif&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;images&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+ 
+     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;288&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;images&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imageio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'%s/%s.png'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+ 
+     &lt;span class=&quot;n&quot;&gt;imageio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mimsave&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'%s/animation.gif'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;images&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;cropimagesfromdir&lt;/em&gt; va a recortar las imágenes que en mi caso tenian algunos bordes adicionales que no necesitaba. 
+&lt;em&gt;creategif&lt;/em&gt; va a generar el gif animado usando la librería &lt;em&gt;imageio&lt;/em&gt;.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;img src=&quot;/images/articles/city-pixel/ch0_animation.gif&quot; alt=&quot;Canal 0&quot; width=&quot;200&quot; /&gt;
+&lt;img src=&quot;/images/articles/city-pixel/ch1_animation.gif&quot; alt=&quot;Canal 1&quot; width=&quot;200&quot; /&gt;
+&lt;img src=&quot;/images/articles/city-pixel/ch2_animation.gif&quot; alt=&quot;Canal 2&quot; width=&quot;200&quot; /&gt;
+&lt;/center&gt;
+
+&lt;p&gt;El resultado final me deja bastante satisfecho, para mi es una herramienta muy útil ya que me permíte ver el comportamiento de los datos dentro dentro de un archivo y entender los momentos de mayor flujo de vehículos y enfocar mis esfuerzos en analizar esa parte del día.&lt;/p&gt;
+
+&lt;p&gt;Si te interesa conocer más sobre como funciona y la implementación completa de la solución podés ver mi repositorio de github &lt;a href=&quot;https://github.com/avelezd/plot_h5maps&quot;&gt;ploth5maps - Plotting pixel maps from HDF5 files&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Espero que les resulte tán útil como a mi.&lt;/p&gt;</content><author><name></name></author><summary type="html">El nombre de este post me sigue sonando extráño pero resúme bastante bien su contenido, desde hace un tiempo estoy trabajando con un conjunto de datos que describe el flujo de tráfico de 3 grandes ciudades europeas:</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://0.0.0.0:4000/images/articles/city-pixel/header.png" /><media:content medium="image" url="http://0.0.0.0:4000/images/articles/city-pixel/header.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Hello githubpages world!</title><link href="http://0.0.0.0:4000/2019/Hello-world/" rel="alternate" type="text/html" title="Hello githubpages world!" /><published>2019-10-05T00:00:00-05:00</published><updated>2019-10-05T00:00:00-05:00</updated><id>http://0.0.0.0:4000/2019/Hello-world</id><content type="html" xml:base="http://0.0.0.0:4000/2019/Hello-world/">&lt;p&gt;&lt;img src=&quot;/images/articles/head1.png&quot; alt=&quot;post head&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bienvenid@s a &lt;a href=&quot;https://avelezd.github.io/&quot;&gt;avelezd + github&lt;/a&gt;, este es mi blog personal, aunque en realidad es más una libreta anoaciones donde registro los experimentos que aplico a diferentes conjuntos de datos con el propósito de entender en profundidad muchas técnicas de machine learning, además voy a registrar mi experiencia tras probar algunas herramientas (programas, scripts, librerias, módulos, etc.) durante el desarrollo de cada uno de los experimentos.&lt;/p&gt;
+
+&lt;p&gt;el único objetivo de este espacio es mantener un registro de los temas que voy investigando para evitar que ese conocimiento se pierda con el tiempo y tener que aprenderlo nuevamente, es decir que estas anotaciones son básicamente para mi pero si alguien las encuentra útilies es libre de usarlas, ampliarlas, transformarlas y compartirlas.&lt;/p&gt;
+
+&lt;p&gt;Este blog fue desarrollado gracias &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;, un generador de sitios estáticos que funciona muy bien para proyectos de Github, pueden encontrar el repositorio de jekyll en &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll Repository&lt;/a&gt;.
+Como plantilla utilizé &lt;a href=&quot;https://github.com/barryclark/jekyll-now&quot;&gt;Jekyll Now&lt;/a&gt; lo cual me ahorro un montón de tiempo de programación y diseño, por lo menos para la versión inicial me resultó perfecto. Agregué algunos cambios pequeños a la plantilla original sobre los cuales escribiré en un próximo post.
+Espero que les resulte útil o por lo  menos interesante.&lt;/p&gt;
+
+&lt;h2 id=&quot;licenciamiento&quot;&gt;Licenciamiento&lt;/h2&gt;
+
+&lt;p&gt;Este espacio esta enteramente dedicado a la investigación sin animo de lucro, por tanto el sitio no cuenta con ningún tipo de publicidad desde su inicio, no existen suscripciones pagas ni membrecias. El icono utlizado en el título:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/chip128.png&quot; alt=&quot;blog icon&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Fue creado por &lt;a href=&quot;https://www.flaticon.com/authors/freepik&quot;&gt;Freepik&lt;/a&gt; de &lt;a href=&quot;http://www.flaticon.com/&quot;&gt;flaticon&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/articles/cc_by_sa.png&quot; alt=&quot;cc licence&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Todo el contenido de este blog fue creado y compartido bajo licencia &lt;a href=&quot;https://creativecommons.org/licenses/by-sa/4.0/&quot;&gt;Attribution-ShareAlike&lt;/a&gt; de &lt;a href=&quot;https://creativecommons.org/&quot;&gt;Creative Commons&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Para más información sobre este y otros proyectos visite mis &lt;a href=&quot;https://github.com/avelezd&quot;&gt;repostorios de github&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://0.0.0.0:4000/images/articles/hello-world/header.png" /><media:content medium="image" url="http://0.0.0.0:4000/images/articles/hello-world/header.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

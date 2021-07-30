@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ciudades en píxeles de tráfico – avelezd + github – Machine learning | Data science | Research lab</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="El nombre de este post me sigue sonando extráño pero resúme bastante bien su contenido, desde hace un tiempo estoy trabajando con un conjunto de datos que describe el flujo de tráfico de 3 grandes ciudades europeas:
+
+" />
+    <meta property="og:description" content="El nombre de este post me sigue sonando extráño pero resúme bastante bien su contenido, desde hace un tiempo estoy trabajando con un conjunto de datos que describe el flujo de tráfico de 3 grandes ciudades europeas:
+
+" />
+    
+    <meta name="author" content="avelezd + github" />
+
+    
+    <meta property="og:title" content="Ciudades en píxeles de tráfico" />
+    <meta property="twitter:title" content="Ciudades en píxeles de tráfico" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="avelezd + github - Machine learning | Data science | Research lab" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="/images/chip128.png" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">avelezd + github</a></h1>
+            <p class="site-description">Machine learning | Data science | Research lab</p>
+          </div>
+
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Ciudades en píxeles de tráfico</h1>
+
+  <div class="entry">
+    <p>El nombre de este post me sigue sonando extráño pero resúme bastante bien su contenido, desde hace un tiempo estoy trabajando con un conjunto de datos que describe el flujo de tráfico de 3 grandes ciudades europeas:</p>
+
+<ul>
+  <li><a href="https://es.wikipedia.org/wiki/Berl%C3%ADn">Berlín - Alemánia</a></li>
+  <li><a href="https://es.wikipedia.org/wiki/Estambul">Estambul - Turquía</a></li>
+  <li><a href="https://es.wikipedia.org/wiki/Mosc%C3%BA">Moscú - Rusia</a></li>
+</ul>
+
+<p>Los archivos fuente están en formato <a href="https://support.hdfgroup.org/HDF5/whatishdf5.html">HDF5</a> el cual permite almacenar grandes volúmnes de datos en arreglos multidimencionales. Cada archivo contiene 24 horas de información sobre el flujo de tráfico en una ciudad, representada en un arreglo de 4 dimensiones con valores entre 0 y 255.
+La verdad es que NO es muy cómodo validar la información de ésta manéra, así que dedíque algunas horas del fín de semana para generar mapas a partir de esos datos y el resultado es un poco de código python, este post y este lindo gif!</p>
+
+<center><img src="/images/articles/city-pixel/animacion_estambul_ch1.gif" alt="Estambul" width="300" align="center" /></center>
+
+<h2 id="que-contienen-los-archivos-hdf5-exactamente">¿Que contienen los archivos HDF5 exactamente?</h2>
+<p>como dije antes estos archivos contienen arreglos multidimensionales, los cuales tienen la forma {288, 495, 436, 3}, esto básicamente significa:</p>
+
+<ul>
+  <li><strong>288 bloques:</strong> Cada bloque representa 5 minútos de información generada, 288 bloques de 5 minutos son 24 horas de flujo de tráfico.</li>
+  <li><strong>495 píxeles de alto:</strong> Las ciudades fueron segmentadas en píxeles, cada píxel representa un espacio de apróximadamente 100x100 mts, cada píxel resúme la actividad del tráfico en ese lugar del mapa en un bloque de tiempo. Cada ciudad contiene 495 píxeles de alto.</li>
+  <li><strong>436 píxeles de ancho:</strong> Cada ciudad contiene 436 píxeles de ancho.</li>
+</ul>
+
+<center><img src="/images/articles/city-pixel/berlin_tessellation.png" alt="Estambul" width="600" align="center" /></center>
+
+<ul>
+  <li><strong>3 Canales:</strong> La información del tráfico está dividida en trés canáles diferentes: <em>volúmen, velocidad y dirección</em>.</li>
+</ul>
+
+<p>Entonces cuando nos referimos a un frame, estamos hablando de un bloque de 5 minutos que contiene 3 mapas (uno por cada canal), donde cada celda de la matriz de 495x436 contiene un valor escalado entre 0 y 255 que representa el estado del tráfico en un instante de tiempo en esa ubicación.</p>
+
+<p>Puedes encontrar información mucho más técnica y detallada acerca del conjunto de datos en <a href="https://www.iarai.ac.at/traffic4cast/"><em>The Traffic4casting challenge 2019</em></a>.</p>
+
+<h2 id="y-cómo-se-hace-una-imagen-con-todo-eso">y ¿cómo se hace una imagen con todo eso?</h2>
+
+<p>Pues es justo ahí donde aparece Python y algunas librerías muy útilies.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</code></pre></div></div>
+<p><em>h5py</em> nos va a permitir manipuar los archivos HDF5 de extensión .h5, con <em>numpy</em> vamos a transformat los arreglos mltidemncionales en matrices sencillas de nxn y  <em>matplotlib</em> nos va a permitor generar los gráficos. Ahora tenemos todo para iniciar, lo primero va a ser cargar el archivo.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">inpath</span> <span class="o">=</span> <span class="s">'/path/of/file/filename.h5'</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="p">.</span><span class="n">File</span><span class="p">(</span><span class="n">inpath</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+
+<span class="c1"># Estructura propia de los archivos HDF5
+</span><span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">a_group_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">a_group_key</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:]]</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Esta parte del código va a permitir acceder directamente a los datos que es lo que nos interesa. la función <em>numpy.stack</em> va a apilar las matrices de datos que va a extrayendo creando arreglos de numpy. Este tipo de archivos permiten almacenar grandes volúmenes de datos por lo que en ocaciones pueden tener varias ‘keys’, en este caso solo tenemos una por lo que acceder a los datos es bastante sencillo (solo copié y pegué este código de la documentación oficial).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">framearray</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">495</span><span class="p">,</span> <span class="mi">436</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span> 
+<span class="n">nuchannel</span> <span class="o">=</span> <span class="mi">0</span> 
+
+<span class="k">for</span> <span class="n">blockidx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">288</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">rowidx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">494</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">colidx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">435</span><span class="p">):</span>
+            <span class="n">framearray</span><span class="p">[</span><span class="n">rowidx</span><span class="p">,</span> <span class="n">colidx</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">blockidx</span><span class="p">,</span> <span class="n">rowidx</span><span class="p">,</span> <span class="n">colidx</span><span class="p">,</span> <span class="n">nuchannel</span><span class="p">]</span>
+</code></pre></div></div>
+<p>Con esto vamos a armar un arreglo de 3 dimensiones ya que elegimos un solo canal, la idea inicial es graficar cada canal independientente, además va a estar en formato numpy lo que lo hace más fácil de manejar. Dado que tenemos 3 canales y cada canal usa valores valores enre 0 y 255, me pareció buena idea usar un sistema de colores R,G,B. para esme armé un función para crear una paleta de colores personalizada.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
+
+<span class="k">def</span> <span class="nf">createcolormap</span><span class="p">(</span><span class="n">nuchannel</span><span class="p">):</span>
+ 
+     <span class="n">ltcolors</span> <span class="o">=</span> <span class="p">[]</span>
+     <span class="k">for</span> <span class="n">colhex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">253</span><span class="p">):</span>
+ 
+         <span class="n">hexstr</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">colhex</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">'0x'</span><span class="p">,</span><span class="s">''</span><span class="p">)</span>
+ 
+         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hexstr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+             <span class="n">hexstr</span> <span class="o">=</span> <span class="s">'0%s'</span><span class="o">%</span><span class="n">hexstr</span>
+ 
+         <span class="k">if</span> <span class="n">nuchannel</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+             <span class="n">rgbstr</span> <span class="o">=</span> <span class="s">'#%s0000'</span><span class="o">%</span><span class="n">hexstr</span> <span class="c1"># red
+</span>         <span class="k">elif</span> <span class="n">nuchannel</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+               <span class="n">rgbstr</span> <span class="o">=</span> <span class="s">'#00%s00'</span><span class="o">%</span><span class="n">hexstr</span> <span class="c1"># green
+</span>         <span class="k">else</span><span class="p">:</span>
+             <span class="n">rgbstr</span> <span class="o">=</span> <span class="s">'#0000%s'</span><span class="o">%</span><span class="n">hexstr</span> <span class="c1"># blue
+</span> 
+         <span class="n">ltcolors</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgbstr</span><span class="p">)</span>
+ 
+     <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">ltcolors</span><span class="p">)</span>
+     <span class="k">return</span> <span class="n">cmap</span>
+
+</code></pre></div></div>
+
+<p>Esta función va a usar el número del canal para generar los valores RGB que van a componer el mapa de colores de cada imagen.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">save_plotframe</span><span class="p">(</span><span class="n">frame2plot</span><span class="p">,</span><span class="n">custcmap</span><span class="p">,</span><span class="n">nublock</span><span class="p">,</span><span class="n">nuchannel</span><span class="p">):</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">495</span><span class="p">,</span><span class="mi">436</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">frame2plot</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">custcmap</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'block %s'</span><span class="o">%</span><span class="n">nublock</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">fig</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'frames/ch%s/%s.png'</span><span class="o">%</span><span class="p">(</span><span class="n">nuchannel</span><span class="p">,</span><span class="n">nublock</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>La función save_plotframe va generar las 288 imágenes que componen un día usando maplotlib y las va a guardar en la direccion que más nos guste. finalmente vamos a usar dos funciones que nos van a permitir generar el gif animado.</p>
+
+<center>
+<img src="/images/articles/city-pixel/ch0.png" alt="Canal 0" width="200" />
+<img src="/images/articles/city-pixel/ch1.png" alt="Canal 1" width="200" />
+<img src="/images/articles/city-pixel/ch2.png" alt="Canal 2" width="200" />
+</center>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+
+<span class="k">def</span> <span class="nf">cropimagesfromdir</span><span class="p">(</span><span class="n">inpath</span><span class="p">,</span><span class="n">outpath</span><span class="p">):</span>
+ 
+     <span class="n">f</span> <span class="o">=</span> <span class="p">[]</span>
+ 
+     <span class="k">for</span> <span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span> <span class="ow">in</span> <span class="n">walk</span><span class="p">(</span><span class="n">inpath</span><span class="p">):</span>
+         <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">dirnames</span><span class="p">:</span>
+             <span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span><span class="n">dirname</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+             <span class="n">file_path</span> <span class="o">=</span> <span class="s">"%s/%s"</span><span class="o">%</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+ 
+             <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+     
+             <span class="c1"># im.crop((left, top, right, bottom))
+</span>             <span class="n">region</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">crop</span><span class="p">((</span><span class="mi">620</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">1290</span><span class="p">,</span> <span class="mi">880</span><span class="p">))</span>
+             <span class="n">region</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">"%s/%s"</span><span class="o">%</span><span class="p">(</span><span class="n">outpath</span><span class="p">,</span><span class="n">filename</span><span class="p">))</span>
+ 
+ 
+ <span class="k">def</span> <span class="nf">creategif</span><span class="p">(</span><span class="n">outpath</span><span class="p">):</span>
+     <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+ 
+     <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">288</span><span class="p">):</span>
+         <span class="n">images</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">imageio</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'%s/%s.png'</span><span class="o">%</span><span class="p">(</span><span class="n">outpath</span><span class="p">,</span><span class="n">idx</span><span class="p">)))</span>
+ 
+     <span class="n">imageio</span><span class="p">.</span><span class="n">mimsave</span><span class="p">(</span><span class="s">'%s/animation.gif'</span><span class="o">%</span><span class="n">outpath</span><span class="p">,</span> <span class="n">images</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><em>cropimagesfromdir</em> va a recortar las imágenes que en mi caso tenian algunos bordes adicionales que no necesitaba. 
+<em>creategif</em> va a generar el gif animado usando la librería <em>imageio</em>.</p>
+
+<center>
+<img src="/images/articles/city-pixel/ch0_animation.gif" alt="Canal 0" width="200" />
+<img src="/images/articles/city-pixel/ch1_animation.gif" alt="Canal 1" width="200" />
+<img src="/images/articles/city-pixel/ch2_animation.gif" alt="Canal 2" width="200" />
+</center>
+
+<p>El resultado final me deja bastante satisfecho, para mi es una herramienta muy útil ya que me permíte ver el comportamiento de los datos dentro dentro de un archivo y entender los momentos de mayor flujo de vehículos y enfocar mis esfuerzos en analizar esa parte del día.</p>
+
+<p>Si te interesa conocer más sobre como funciona y la implementación completa de la solución podés ver mi repositorio de github <a href="https://github.com/avelezd/plot_h5maps">ploth5maps - Plotting pixel maps from HDF5 files</a>.</p>
+
+<p>Espero que les resulte tán útil como a mi.</p>
+
+
+  </div>
+
+  <div class="date">
+    Written on April 28, 2020
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+
+
+
+<a href="https://github.com/https://github.com/avelezd"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/https://www.linkedin.com/in/avelezd/"><i class="svg-icon linkedin"></i></a>
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

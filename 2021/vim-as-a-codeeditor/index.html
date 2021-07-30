@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vim como editor de código – avelezd + github – Machine learning | Data science | Research lab</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="(Work in progress)
+
+" />
+    <meta property="og:description" content="(Work in progress)
+
+" />
+    
+    <meta name="author" content="avelezd + github" />
+
+    
+    <meta property="og:title" content="Vim como editor de código" />
+    <meta property="twitter:title" content="Vim como editor de código" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="avelezd + github - Machine learning | Data science | Research lab" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="/images/chip128.png" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">avelezd + github</a></h1>
+            <p class="site-description">Machine learning | Data science | Research lab</p>
+          </div>
+
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Vim como editor de código</h1>
+
+  <div class="entry">
+    <h1 id="work-in-progress">(Work in progress)</h1>
+
+<!--Agregar mas historia de VIM-->
+<p>Vim es un editor de texto muy liviano, normalmente corre en una consola, originalmente desarrollado para linux. Yo personalmente lo uso para editar todo lo que sea posible, este post busca compartir algunas de las configuraciones que he ido agregando a Vim para convertirlo en mi editor de texto preferido.</p>
+
+<p><em>Este publicación esta enfocada en la version linux de Vim, no se consideraron versiones adapatadas a otros sistemas operativos.</em></p>
+
+<p>Cuando empecé a utilizar vim como editor de código mientras abandonaba el mundo de los IDE’s, era lógico extrañar algunas características que hacían todo más sencillo, en este caso al momento de desembarcar en <em>Vim</em>(o su predecesor <a href="https://en.wikipedia.org/wiki/Vi">Vi</a>) todo parece hacerse más complicado, en este caso asumo que el lector a conoce los aspectos básicos del funcionamiento de <em>Vim</em>, de no ser así quizá debería iniciar leyendo estos articulos:</p>
+
+<ul>
+  <li>Tutorial 1: Enlace acá</li>
+  <li>Tutorial 2: Enlace acá</li>
+</ul>
+
+<p><em>Vim</em> ofrece una gran variedad de <a href="https://www.arsys.es/blog/soluciones/comandos-vim/">atajos</a> que pueden hacer que tu experiencia con la herramienta sea mucho más agradable. sin embargo este post busca cubrir el uso de plugins que faciliten la edición de código, en este caso particular me voy a enfocar en python como lenguaje de programación ya que actualmente es el que más utilizo.</p>
+
+<h2 id="los-básicos">Los básicos</h2>
+<p>Primero cubriremos los requerimientos fundamentales para la edición de código.</p>
+
+<h3 id="número-de-línea">Número de línea</h3>
+<p>Más que básico, fundamental!, por defecto <em>Vim</em> no ofrece el número de línea visible, esto hace sea más dificil de leer o incluso de buscar un error. para este caso lo más sencillo es salir del modo editor y escribir:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:set number
+</code></pre></div></div>
+<p>Esto permitirá ver lo número de línea del archivo que se está editando actualmente y perdera su efecto en cuanto se cierre el archivo, es decir que es totalmente temporal. Si desea que este cambio sea permanente debe agregar el comando anterior al archivo:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/.vimrc
+</code></pre></div></div>
+
+<p>Si no encuentra este archivo en su directorio ‘home’ puede crearlo y agregar esta línea. Una vez editado este archivo, para ver los cambios aplicados inicie un nuevo editor de <em>Vim</em>, es posible que este cambio no se vea reflejado en los editores que estaban abiertos desde antes de la edición del archivo, en este caso reinicie su editor para ver los cambios.</p>
+
+<h3 id="espacios-del-tab--4">Espacios del Tab = 4</h3>
+<p>Por defecto <em>Vim</em> asigna 8 espacios cada vez apretamos la tecla ‘Tab’, esta médida se puede modificar según sea necesario, en mi caso voy a usar Tab=4 porque es la cantidad de espacios que requiere python para la identación, para esto vamos a agregar 3 comandos adicionales al archivo <em>vimrc</em>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set tabstop=4
+
+set shiftwidth=4
+
+set expandtab
+</code></pre></div></div>
+<h3 id="detector-de-llaves-">Detector de llaves ‘{}’</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set showmatch
+</code></pre></div></div>
+
+<h3 id="resaltar-sintaxis">Resaltar sintaxis</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>syntax on
+</code></pre></div></div>
+
+<h2 id="instalación-del-plugin-manager">Instalación del plugin manager</h2>
+
+<p>Vim utiliza por defecto un plugin manager pero vamos a instalar <strong>vundle</strong> para simplificar la instalación y actualización de paquetes. en la terminal escriba:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+</code></pre></div></div>
+<p>Esto va a clonar el repositorio <em>bundle</em> en su equipo.
+El siguiente paso es modificar el archivo de confiración de Vim (vimrc):</p>
+
+<ul>
+  <li>busque el archivo <em>vimrc</em> por lo general se encuentra en su home folder.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  vim ~/.vimrc
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>y agregue el siguiente código:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  filetype off                  " required
+
+  " set the runtime path to include Vundle and initialize
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
+
+  " let Vundle manage Vundle, required
+  Plugin 'gmarik/Vundle.vim'
+
+  " All of your Plugins must be added before the following line
+  call vundle#end()
+  filetype plugin indent on
+</code></pre></div></div>
+
+<p>Finalmente guarde los cambios y cierre el archivo.</p>
+
+<ul>
+  <li>Para instalar el plugin de Vundle dentro de vim, inicie vim desde su terminal. Luego escriba <code class="highlighter-rouge">:PluginInstall</code> y presione Enter.</li>
+</ul>
+
+<h2 id="plugins">Plugins</h2>
+
+<p>https://www.ionos.mx/digitalguide/servidores/herramientas/editores-linux-como-editar-codigo-con-vim/</p>
+
+  </div>
+
+  <div class="date">
+    Written on July 21, 2021
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+
+
+
+<a href="https://github.com/https://github.com/avelezd"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/https://www.linkedin.com/in/avelezd/"><i class="svg-icon linkedin"></i></a>
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
