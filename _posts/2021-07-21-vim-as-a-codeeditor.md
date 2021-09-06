@@ -2,10 +2,15 @@
 layout: post
 image: /images/articles/defaultbk.png
 title: Vim como editor de código
-resume: (Work in progress) Desde hace algún tiempo que estoy usando vim como editor de código este artículo describe los plugins que me sirvieron.
+resume: VIM es un editor de texto básico, con 2 grandes características: es muy liviano y además se encuentra disponible en (casi) todas las distribuciones linux de la actualidad. Este post contiene un par de configuraciones para convertir esta herramienta básica en un gran editor de código.
 ---
+![VIM Welcome Page](/images/aticles/vim/vim_welcomepage.png)
 
-# (Work in progress)
+## (Work in progress)
+
+VIM es una de esas herramientas que causan grandes divisiones entre las personas, no hay terminos medios, se quiere o se odia, es muy parecida a riquelme.
+VIM quiere decir "Vi Improved" que significa Vi mejorado, esto no dice mucho, sin mebargo vi quiere decir visual ya que es la parte visual de un editor de texto. ex es el editor de texto que se ejecuta bajo el motor de Vi, Ex proviene de em el cual proviene del editor más básico que se puede encontrar en una computadora actual, el viejo y desconocido por multitudes "ed".
+<!--una buena manera de iniciar-->
 
 <!--Agregar mas historia de VIM-->
 Vim es un editor de texto muy liviano, normalmente corre en una consola, originalmente desarrollado para linux. Yo personalmente lo uso para editar todo lo que sea posible, este post busca compartir algunas de las configuraciones que he ido agregando a Vim para convertirlo en mi editor de texto preferido.

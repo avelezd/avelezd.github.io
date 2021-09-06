@@ -4,3 +4,8 @@ __pycache__
 *.csv
 .vscode
 *.exe
+_site
+.sass-cache
+.jekyll-metadata
+Gemfile
+Gemfile.lock
